@@ -1,7 +1,6 @@
 // Описаний в документації
 import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import { galleryItems } from './gallery-items.js';
 
 const galleryRef = document.querySelector('.gallery');
@@ -26,3 +25,4 @@ const gallery = new SimpleLightbox('.gallery a', {
   close: false,
   enableKeyboard: true,
 });
+console.log(gallery);
