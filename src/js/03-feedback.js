@@ -9,20 +9,38 @@ const LOCAL_STORAGE_KEY = 'feedback-form-state';
 
 function handlerSubmit(event) {
   event.preventDefault();
-  const value = event.target.elements.message.value.trim();
-  console.log(value);
-  event.target.reset();
+  const {
+    elements: { email, message },
+  } = event.currentTarget;
+  if (email.value === '' || message.value === '') {
+    return alert('fill all fiels');
+  }
+  console.log(userData);
+  removeEventListener(LOCAL_STORAGE_KEY);
+  event.currentTarget.reset();
+  userData = {};
 }
 
 function loadForm() {
-  try {
-    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (error) {
-    console.log(error.message);
+  const userDataFromLS = load(LOCAL_STORAGE_KEY);
+  if (!userDataFromLS) {
+    return;
+  }
+  const formElements = form.elements;
+  for (const key in userDataFromLS) {
+    if (userDataFromLS.hasOwnProperty(key)) {
+      formElements[key].value = userDataFromLS[key];
+      if (userDataFromLS[key]) {
+        userData[key] = userDataFromLS[key];
+      }
+    }
   }
 }
 
 function handlerInput(event) {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(event));
+  const target = event.target;
+  const formElValue = target.value;
+  const formElName = target.name;
+  userData[formElName] = formElValue;
+  save(LOCAL_STORAGE_KEY, userData);
 }
